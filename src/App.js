@@ -13,39 +13,56 @@ class App extends React.Component {
   }
 
   handleChange(event) {
-    const {target:{value=''} = {}} = event
+    const {
+      target:{
+        value=''
+      } = {}
+    } = event
+
     this.setState({
-      text:value, 
+      text: value, 
       value: value.length
     })
   }
 
-  handleRemoveLetter(letter, index) {
-    let _text = this.state.text
+  handleRemoveLetter(index) {
+    const {
+      state:{
+        text
+      } = {}
+    } = this
+
+    let _text = text
     let letters = _text.split('')
     letters.splice(index,1)
     letters=letters.join('')
 
     this.setState({
-      text:letters,
+      text: letters,
       value: letters.length
     })
   }
 
-  playText(text) {
+  displayLetters(text) {
     let _text = text
     let letters = _text.split('')
 
     return (
       letters.map((letter, index) => {
-        return <CharComponent key={index} letter={letter} index={index} handleRemoveLetter={this.handleRemoveLetter}/>
+        return (
+        <CharComponent 
+          key={index} 
+          letter={letter} 
+          index={index} 
+          handleRemoveLetter={this.handleRemoveLetter}
+        />)
       })
     )
   }
 
   render() {
     return (
-      <div className="App">
+      <div>
         <input
           type="text"
           onChange= {this.handleChange}
@@ -53,7 +70,7 @@ class App extends React.Component {
         />
         <p>{this.state.value}</p>
         <ValidationComponent controlLength={this.state.value}/>
-        {this.playText(this.state.text)}
+        {this.displayLetters(this.state.text)}
       </div>
     )
   }
